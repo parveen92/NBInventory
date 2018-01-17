@@ -1,0 +1,75 @@
+﻿@model IEnumerable<NBInventory.DTO.StockItemDTO>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        @*<th>
+            @Html.DisplayNameFor(model => model.Item_ID)
+        </th>*@
+        <th>
+            @Html.DisplayNameFor(model => model.Item_Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Item_Quantity)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Item_Purchased_On)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Item_Disposed_On)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Item_Remarks)
+        </th>
+        @*<th>
+            @Html.DisplayNameFor(model => model.Store_ID)
+        </th>*@
+        <th>
+            @Html.DisplayNameFor(model => model.Store_Name)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        @*<td>
+            @Html.DisplayFor(modelItem => item.Item_ID)
+        </td>*@
+        <td>
+            @Html.DisplayFor(modelItem => item.Item_Name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Item_Quantity)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Item_Purchased_On)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Item_Disposed_On)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Item_Remarks)
+        </td>
+        @*<td>
+            @Html.DisplayFor(modelItem => item.Store_ID)
+        </td>*@
+        <td>
+            @Html.DisplayFor(modelItem => item.Store_Name)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.Item_ID}) |
+            @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.Item_ID})
+        </td>
+    </tr>
+}
+
+</table>

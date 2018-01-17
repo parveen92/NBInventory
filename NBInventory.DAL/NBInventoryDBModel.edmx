@@ -1,0 +1,596 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="NBInventoryDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Item_Stock">
+          <Key>
+            <PropertyRef Name="Item_ID" />
+          </Key>
+          <Property Name="Item_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Item_Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Item_Quantity" Type="int" Nullable="false" />
+          <Property Name="Item_Purchased_On" Type="date" />
+          <Property Name="Item_Disposed_On" Type="date" />
+          <Property Name="Item_Remarks" Type="nvarchar" MaxLength="250" />
+          <Property Name="Store_ID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Kitchen">
+          <Key>
+            <PropertyRef Name="Kitchen_ID" />
+          </Key>
+          <Property Name="Kitchen_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Kitchen_Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Kitchen_Item_Detail">
+          <Key>
+            <PropertyRef Name="Kitchen_ItemDetail_ID" />
+          </Key>
+          <Property Name="Kitchen_ItemDetail_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Kitchen_ID" Type="int" Nullable="false" />
+          <Property Name="Kitchen_ItemID" Type="int" Nullable="false" />
+          <Property Name="Kitchen_ItemQuantity" Type="int" Nullable="false" />
+          <Property Name="Kitchen_ItemDate" Type="date" Nullable="false" />
+          <Property Name="Kitchen_StoreID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Room_Numbers">
+          <Key>
+            <PropertyRef Name="Room_NumberID" />
+          </Key>
+          <Property Name="Room_NumberID" Type="int" Nullable="false" />
+          <Property Name="Room_Type" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Rooms_Item_Detail">
+          <Key>
+            <PropertyRef Name="Rooms_Item_Detail_ID" />
+          </Key>
+          <Property Name="Rooms_Item_Detail_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Room_NumberID" Type="int" Nullable="false" />
+          <Property Name="ItemID" Type="int" Nullable="false" />
+          <Property Name="ItemQuantity" Type="int" Nullable="false" />
+          <Property Name="ItemDate" Type="date" Nullable="false" />
+          <Property Name="StoreID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Store">
+          <Key>
+            <PropertyRef Name="Store_ID" />
+          </Key>
+          <Property Name="Store_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Store_Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
+        <Association Name="FK_Item_Stock_Store">
+          <End Role="Store" Type="Self.Store" Multiplicity="1" />
+          <End Role="Item_Stock" Type="Self.Item_Stock" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Store">
+              <PropertyRef Name="Store_ID" />
+            </Principal>
+            <Dependent Role="Item_Stock">
+              <PropertyRef Name="Store_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Kitchen_Item_Detail_Item_Stock">
+          <End Role="Item_Stock" Type="Self.Item_Stock" Multiplicity="1" />
+          <End Role="Kitchen_Item_Detail" Type="Self.Kitchen_Item_Detail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Item_Stock">
+              <PropertyRef Name="Item_ID" />
+            </Principal>
+            <Dependent Role="Kitchen_Item_Detail">
+              <PropertyRef Name="Kitchen_ItemID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Kitchen_Item_Detail_Kitchen">
+          <End Role="Kitchen" Type="Self.Kitchen" Multiplicity="1" />
+          <End Role="Kitchen_Item_Detail" Type="Self.Kitchen_Item_Detail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Kitchen">
+              <PropertyRef Name="Kitchen_ID" />
+            </Principal>
+            <Dependent Role="Kitchen_Item_Detail">
+              <PropertyRef Name="Kitchen_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Kitchen_Item_Detail_Store">
+          <End Role="Store" Type="Self.Store" Multiplicity="1" />
+          <End Role="Kitchen_Item_Detail" Type="Self.Kitchen_Item_Detail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Store">
+              <PropertyRef Name="Store_ID" />
+            </Principal>
+            <Dependent Role="Kitchen_Item_Detail">
+              <PropertyRef Name="Kitchen_StoreID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Rooms_Item_Detail_Item_Stock1">
+          <End Role="Item_Stock" Type="Self.Item_Stock" Multiplicity="1" />
+          <End Role="Rooms_Item_Detail" Type="Self.Rooms_Item_Detail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Item_Stock">
+              <PropertyRef Name="Item_ID" />
+            </Principal>
+            <Dependent Role="Rooms_Item_Detail">
+              <PropertyRef Name="ItemID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Rooms_Item_Detail_Room_Numbers1">
+          <End Role="Room_Numbers" Type="Self.Room_Numbers" Multiplicity="1" />
+          <End Role="Rooms_Item_Detail" Type="Self.Rooms_Item_Detail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Room_Numbers">
+              <PropertyRef Name="Room_NumberID" />
+            </Principal>
+            <Dependent Role="Rooms_Item_Detail">
+              <PropertyRef Name="Room_NumberID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Rooms_Item_Detail_Store">
+          <End Role="Store" Type="Self.Store" Multiplicity="1" />
+          <End Role="Rooms_Item_Detail" Type="Self.Rooms_Item_Detail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Store">
+              <PropertyRef Name="Store_ID" />
+            </Principal>
+            <Dependent Role="Rooms_Item_Detail">
+              <PropertyRef Name="StoreID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Function Name="fn_diagramobjects" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="int" />
+        <Function Name="sp_alterdiagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+          <Parameter Name="version" Type="int" Mode="In" />
+          <Parameter Name="definition" Type="varbinary(max)" Mode="In" />
+        </Function>
+        <Function Name="sp_creatediagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+          <Parameter Name="version" Type="int" Mode="In" />
+          <Parameter Name="definition" Type="varbinary(max)" Mode="In" />
+        </Function>
+        <Function Name="sp_dropdiagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_helpdiagramdefinition" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_helpdiagrams" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_renamediagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+          <Parameter Name="new_diagramname" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="sp_upgraddiagrams" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <EntityContainer Name="NBInventoryDBModelStoreContainer">
+          <EntitySet Name="Item_Stock" EntityType="Self.Item_Stock" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Kitchen" EntityType="Self.Kitchen" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Kitchen_Item_Detail" EntityType="Self.Kitchen_Item_Detail" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Room_Numbers" EntityType="Self.Room_Numbers" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Rooms_Item_Detail" EntityType="Self.Rooms_Item_Detail" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Store" EntityType="Self.Store" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Item_Stock_Store" Association="Self.FK_Item_Stock_Store">
+            <End Role="Store" EntitySet="Store" />
+            <End Role="Item_Stock" EntitySet="Item_Stock" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Kitchen_Item_Detail_Item_Stock" Association="Self.FK_Kitchen_Item_Detail_Item_Stock">
+            <End Role="Item_Stock" EntitySet="Item_Stock" />
+            <End Role="Kitchen_Item_Detail" EntitySet="Kitchen_Item_Detail" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Kitchen_Item_Detail_Kitchen" Association="Self.FK_Kitchen_Item_Detail_Kitchen">
+            <End Role="Kitchen" EntitySet="Kitchen" />
+            <End Role="Kitchen_Item_Detail" EntitySet="Kitchen_Item_Detail" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Kitchen_Item_Detail_Store" Association="Self.FK_Kitchen_Item_Detail_Store">
+            <End Role="Store" EntitySet="Store" />
+            <End Role="Kitchen_Item_Detail" EntitySet="Kitchen_Item_Detail" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Rooms_Item_Detail_Item_Stock1" Association="Self.FK_Rooms_Item_Detail_Item_Stock1">
+            <End Role="Item_Stock" EntitySet="Item_Stock" />
+            <End Role="Rooms_Item_Detail" EntitySet="Rooms_Item_Detail" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Rooms_Item_Detail_Room_Numbers1" Association="Self.FK_Rooms_Item_Detail_Room_Numbers1">
+            <End Role="Room_Numbers" EntitySet="Room_Numbers" />
+            <End Role="Rooms_Item_Detail" EntitySet="Rooms_Item_Detail" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Rooms_Item_Detail_Store" Association="Self.FK_Rooms_Item_Detail_Store">
+            <End Role="Store" EntitySet="Store" />
+            <End Role="Rooms_Item_Detail" EntitySet="Rooms_Item_Detail" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="NBInventoryDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Item_Stock">
+          <Key>
+            <PropertyRef Name="Item_ID" />
+          </Key>
+          <Property Name="Item_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Item_Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Item_Quantity" Type="Int32" Nullable="false" />
+          <Property Name="Item_Purchased_On" Type="DateTime" Precision="0" />
+          <Property Name="Item_Disposed_On" Type="DateTime" Precision="0" />
+          <Property Name="Item_Remarks" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="Store_ID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Store" Relationship="Self.FK_Item_Stock_Store" FromRole="Item_Stock" ToRole="Store" />
+          <NavigationProperty Name="Kitchen_Item_Detail" Relationship="Self.FK_Kitchen_Item_Detail_Item_Stock" FromRole="Item_Stock" ToRole="Kitchen_Item_Detail" />
+          <NavigationProperty Name="Rooms_Item_Detail" Relationship="Self.FK_Rooms_Item_Detail_Item_Stock1" FromRole="Item_Stock" ToRole="Rooms_Item_Detail" />
+        </EntityType>
+        <EntityType Name="Kitchen">
+          <Key>
+            <PropertyRef Name="Kitchen_ID" />
+          </Key>
+          <Property Name="Kitchen_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Kitchen_Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Kitchen_Item_Detail" Relationship="Self.FK_Kitchen_Item_Detail_Kitchen" FromRole="Kitchen" ToRole="Kitchen_Item_Detail" />
+        </EntityType>
+        <EntityType Name="Kitchen_Item_Detail">
+          <Key>
+            <PropertyRef Name="Kitchen_ItemDetail_ID" />
+          </Key>
+          <Property Name="Kitchen_ItemDetail_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Kitchen_ID" Type="Int32" Nullable="false" />
+          <Property Name="Kitchen_ItemID" Type="Int32" Nullable="false" />
+          <Property Name="Kitchen_ItemQuantity" Type="Int32" Nullable="false" />
+          <Property Name="Kitchen_ItemDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="Kitchen_StoreID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Item_Stock" Relationship="Self.FK_Kitchen_Item_Detail_Item_Stock" FromRole="Kitchen_Item_Detail" ToRole="Item_Stock" />
+          <NavigationProperty Name="Kitchen" Relationship="Self.FK_Kitchen_Item_Detail_Kitchen" FromRole="Kitchen_Item_Detail" ToRole="Kitchen" />
+          <NavigationProperty Name="Store" Relationship="Self.FK_Kitchen_Item_Detail_Store" FromRole="Kitchen_Item_Detail" ToRole="Store" />
+        </EntityType>
+        <EntityType Name="Room_Numbers">
+          <Key>
+            <PropertyRef Name="Room_NumberID" />
+          </Key>
+          <Property Name="Room_NumberID" Type="Int32" Nullable="false" />
+          <Property Name="Room_Type" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Rooms_Item_Detail" Relationship="Self.FK_Rooms_Item_Detail_Room_Numbers1" FromRole="Room_Numbers" ToRole="Rooms_Item_Detail" />
+        </EntityType>
+        <EntityType Name="Rooms_Item_Detail">
+          <Key>
+            <PropertyRef Name="Rooms_Item_Detail_ID" />
+          </Key>
+          <Property Name="Rooms_Item_Detail_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Room_NumberID" Type="Int32" Nullable="false" />
+          <Property Name="ItemID" Type="Int32" Nullable="false" />
+          <Property Name="ItemQuantity" Type="Int32" Nullable="false" />
+          <Property Name="ItemDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="StoreID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Item_Stock" Relationship="Self.FK_Rooms_Item_Detail_Item_Stock1" FromRole="Rooms_Item_Detail" ToRole="Item_Stock" />
+          <NavigationProperty Name="Room_Numbers" Relationship="Self.FK_Rooms_Item_Detail_Room_Numbers1" FromRole="Rooms_Item_Detail" ToRole="Room_Numbers" />
+          <NavigationProperty Name="Store" Relationship="Self.FK_Rooms_Item_Detail_Store" FromRole="Rooms_Item_Detail" ToRole="Store" />
+        </EntityType>
+        <EntityType Name="Store">
+          <Key>
+            <PropertyRef Name="Store_ID" />
+          </Key>
+          <Property Name="Store_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Store_Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Item_Stock" Relationship="Self.FK_Item_Stock_Store" FromRole="Store" ToRole="Item_Stock" />
+          <NavigationProperty Name="Kitchen_Item_Detail" Relationship="Self.FK_Kitchen_Item_Detail_Store" FromRole="Store" ToRole="Kitchen_Item_Detail" />
+          <NavigationProperty Name="Rooms_Item_Detail" Relationship="Self.FK_Rooms_Item_Detail_Store" FromRole="Store" ToRole="Rooms_Item_Detail" />
+        </EntityType>
+        <EntityType Name="sysdiagram">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <Association Name="FK_Item_Stock_Store">
+          <End Role="Store" Type="Self.Store" Multiplicity="1" />
+          <End Role="Item_Stock" Type="Self.Item_Stock" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Store">
+              <PropertyRef Name="Store_ID" />
+            </Principal>
+            <Dependent Role="Item_Stock">
+              <PropertyRef Name="Store_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Kitchen_Item_Detail_Item_Stock">
+          <End Role="Item_Stock" Type="Self.Item_Stock" Multiplicity="1" />
+          <End Role="Kitchen_Item_Detail" Type="Self.Kitchen_Item_Detail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Item_Stock">
+              <PropertyRef Name="Item_ID" />
+            </Principal>
+            <Dependent Role="Kitchen_Item_Detail">
+              <PropertyRef Name="Kitchen_ItemID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Rooms_Item_Detail_Item_Stock1">
+          <End Role="Item_Stock" Type="Self.Item_Stock" Multiplicity="1" />
+          <End Role="Rooms_Item_Detail" Type="Self.Rooms_Item_Detail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Item_Stock">
+              <PropertyRef Name="Item_ID" />
+            </Principal>
+            <Dependent Role="Rooms_Item_Detail">
+              <PropertyRef Name="ItemID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Kitchen_Item_Detail_Kitchen">
+          <End Role="Kitchen" Type="Self.Kitchen" Multiplicity="1" />
+          <End Role="Kitchen_Item_Detail" Type="Self.Kitchen_Item_Detail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Kitchen">
+              <PropertyRef Name="Kitchen_ID" />
+            </Principal>
+            <Dependent Role="Kitchen_Item_Detail">
+              <PropertyRef Name="Kitchen_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Kitchen_Item_Detail_Store">
+          <End Role="Store" Type="Self.Store" Multiplicity="1" />
+          <End Role="Kitchen_Item_Detail" Type="Self.Kitchen_Item_Detail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Store">
+              <PropertyRef Name="Store_ID" />
+            </Principal>
+            <Dependent Role="Kitchen_Item_Detail">
+              <PropertyRef Name="Kitchen_StoreID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Rooms_Item_Detail_Room_Numbers1">
+          <End Role="Room_Numbers" Type="Self.Room_Numbers" Multiplicity="1" />
+          <End Role="Rooms_Item_Detail" Type="Self.Rooms_Item_Detail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Room_Numbers">
+              <PropertyRef Name="Room_NumberID" />
+            </Principal>
+            <Dependent Role="Rooms_Item_Detail">
+              <PropertyRef Name="Room_NumberID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Rooms_Item_Detail_Store">
+          <End Role="Store" Type="Self.Store" Multiplicity="1" />
+          <End Role="Rooms_Item_Detail" Type="Self.Rooms_Item_Detail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Store">
+              <PropertyRef Name="Store_ID" />
+            </Principal>
+            <Dependent Role="Rooms_Item_Detail">
+              <PropertyRef Name="StoreID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="NBInventoryDBEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Item_Stock" EntityType="Self.Item_Stock" />
+          <EntitySet Name="Kitchens" EntityType="Self.Kitchen" />
+          <EntitySet Name="Kitchen_Item_Detail" EntityType="Self.Kitchen_Item_Detail" />
+          <EntitySet Name="Room_Numbers" EntityType="Self.Room_Numbers" />
+          <EntitySet Name="Rooms_Item_Detail" EntityType="Self.Rooms_Item_Detail" />
+          <EntitySet Name="Stores" EntityType="Self.Store" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagram" />
+          <AssociationSet Name="FK_Item_Stock_Store" Association="Self.FK_Item_Stock_Store">
+            <End Role="Store" EntitySet="Stores" />
+            <End Role="Item_Stock" EntitySet="Item_Stock" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Kitchen_Item_Detail_Item_Stock" Association="Self.FK_Kitchen_Item_Detail_Item_Stock">
+            <End Role="Item_Stock" EntitySet="Item_Stock" />
+            <End Role="Kitchen_Item_Detail" EntitySet="Kitchen_Item_Detail" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Rooms_Item_Detail_Item_Stock1" Association="Self.FK_Rooms_Item_Detail_Item_Stock1">
+            <End Role="Item_Stock" EntitySet="Item_Stock" />
+            <End Role="Rooms_Item_Detail" EntitySet="Rooms_Item_Detail" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Kitchen_Item_Detail_Kitchen" Association="Self.FK_Kitchen_Item_Detail_Kitchen">
+            <End Role="Kitchen" EntitySet="Kitchens" />
+            <End Role="Kitchen_Item_Detail" EntitySet="Kitchen_Item_Detail" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Kitchen_Item_Detail_Store" Association="Self.FK_Kitchen_Item_Detail_Store">
+            <End Role="Store" EntitySet="Stores" />
+            <End Role="Kitchen_Item_Detail" EntitySet="Kitchen_Item_Detail" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Rooms_Item_Detail_Room_Numbers1" Association="Self.FK_Rooms_Item_Detail_Room_Numbers1">
+            <End Role="Room_Numbers" EntitySet="Room_Numbers" />
+            <End Role="Rooms_Item_Detail" EntitySet="Rooms_Item_Detail" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Rooms_Item_Detail_Store" Association="Self.FK_Rooms_Item_Detail_Store">
+            <End Role="Store" EntitySet="Stores" />
+            <End Role="Rooms_Item_Detail" EntitySet="Rooms_Item_Detail" />
+          </AssociationSet>
+          <FunctionImport Name="sp_alterdiagram">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+            <Parameter Name="version" Mode="In" Type="Int32" />
+            <Parameter Name="definition" Mode="In" Type="Binary" />
+          </FunctionImport>
+          <FunctionImport Name="sp_creatediagram">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+            <Parameter Name="version" Mode="In" Type="Int32" />
+            <Parameter Name="definition" Mode="In" Type="Binary" />
+          </FunctionImport>
+          <FunctionImport Name="sp_dropdiagram">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_helpdiagramdefinition" ReturnType="Collection(NBInventoryDBModel.sp_helpdiagramdefinition_Result)">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_helpdiagrams" ReturnType="Collection(NBInventoryDBModel.sp_helpdiagrams_Result)">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_renamediagram">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+            <Parameter Name="new_diagramname" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="sp_upgraddiagrams" />
+        </EntityContainer>
+        <ComplexType Name="sp_helpdiagramdefinition_Result">
+          <Property Type="Int32" Name="version" Nullable="true" />
+          <Property Type="Binary" Name="definition" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="sp_helpdiagrams_Result">
+          <Property Type="String" Name="Database" Nullable="true" MaxLength="128" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="128" />
+          <Property Type="Int32" Name="ID" Nullable="false" />
+          <Property Type="String" Name="Owner" Nullable="true" MaxLength="128" />
+          <Property Type="Int32" Name="OwnerID" Nullable="false" />
+        </ComplexType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="NBInventoryDBModelStoreContainer" CdmEntityContainer="NBInventoryDBEntities">
+          <EntitySetMapping Name="Item_Stock">
+            <EntityTypeMapping TypeName="NBInventoryDBModel.Item_Stock">
+              <MappingFragment StoreEntitySet="Item_Stock">
+                <ScalarProperty Name="Item_ID" ColumnName="Item_ID" />
+                <ScalarProperty Name="Item_Name" ColumnName="Item_Name" />
+                <ScalarProperty Name="Item_Quantity" ColumnName="Item_Quantity" />
+                <ScalarProperty Name="Item_Purchased_On" ColumnName="Item_Purchased_On" />
+                <ScalarProperty Name="Item_Disposed_On" ColumnName="Item_Disposed_On" />
+                <ScalarProperty Name="Item_Remarks" ColumnName="Item_Remarks" />
+                <ScalarProperty Name="Store_ID" ColumnName="Store_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Kitchens">
+            <EntityTypeMapping TypeName="NBInventoryDBModel.Kitchen">
+              <MappingFragment StoreEntitySet="Kitchen">
+                <ScalarProperty Name="Kitchen_ID" ColumnName="Kitchen_ID" />
+                <ScalarProperty Name="Kitchen_Name" ColumnName="Kitchen_Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Kitchen_Item_Detail">
+            <EntityTypeMapping TypeName="NBInventoryDBModel.Kitchen_Item_Detail">
+              <MappingFragment StoreEntitySet="Kitchen_Item_Detail">
+                <ScalarProperty Name="Kitchen_ItemDetail_ID" ColumnName="Kitchen_ItemDetail_ID" />
+                <ScalarProperty Name="Kitchen_ID" ColumnName="Kitchen_ID" />
+                <ScalarProperty Name="Kitchen_ItemID" ColumnName="Kitchen_ItemID" />
+                <ScalarProperty Name="Kitchen_ItemQuantity" ColumnName="Kitchen_ItemQuantity" />
+                <ScalarProperty Name="Kitchen_ItemDate" ColumnName="Kitchen_ItemDate" />
+                <ScalarProperty Name="Kitchen_StoreID" ColumnName="Kitchen_StoreID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Room_Numbers">
+            <EntityTypeMapping TypeName="NBInventoryDBModel.Room_Numbers">
+              <MappingFragment StoreEntitySet="Room_Numbers">
+                <ScalarProperty Name="Room_NumberID" ColumnName="Room_NumberID" />
+                <ScalarProperty Name="Room_Type" ColumnName="Room_Type" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Rooms_Item_Detail">
+            <EntityTypeMapping TypeName="NBInventoryDBModel.Rooms_Item_Detail">
+              <MappingFragment StoreEntitySet="Rooms_Item_Detail">
+                <ScalarProperty Name="Rooms_Item_Detail_ID" ColumnName="Rooms_Item_Detail_ID" />
+                <ScalarProperty Name="Room_NumberID" ColumnName="Room_NumberID" />
+                <ScalarProperty Name="ItemID" ColumnName="ItemID" />
+                <ScalarProperty Name="ItemQuantity" ColumnName="ItemQuantity" />
+                <ScalarProperty Name="ItemDate" ColumnName="ItemDate" />
+                <ScalarProperty Name="StoreID" ColumnName="StoreID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Stores">
+            <EntityTypeMapping TypeName="NBInventoryDBModel.Store">
+              <MappingFragment StoreEntitySet="Store">
+                <ScalarProperty Name="Store_ID" ColumnName="Store_ID" />
+                <ScalarProperty Name="Store_Name" ColumnName="Store_Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="NBInventoryDBModel.sysdiagram">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="sp_alterdiagram" FunctionName="NBInventoryDBModel.Store.sp_alterdiagram" />
+          <FunctionImportMapping FunctionImportName="sp_creatediagram" FunctionName="NBInventoryDBModel.Store.sp_creatediagram" />
+          <FunctionImportMapping FunctionImportName="sp_dropdiagram" FunctionName="NBInventoryDBModel.Store.sp_dropdiagram" />
+          <FunctionImportMapping FunctionImportName="sp_helpdiagramdefinition" FunctionName="NBInventoryDBModel.Store.sp_helpdiagramdefinition">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="NBInventoryDBModel.sp_helpdiagramdefinition_Result">
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_helpdiagrams" FunctionName="NBInventoryDBModel.Store.sp_helpdiagrams">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="NBInventoryDBModel.sp_helpdiagrams_Result">
+                <ScalarProperty Name="Database" ColumnName="Database" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Owner" ColumnName="Owner" />
+                <ScalarProperty Name="OwnerID" ColumnName="OwnerID" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_renamediagram" FunctionName="NBInventoryDBModel.Store.sp_renamediagram" />
+          <FunctionImportMapping FunctionImportName="sp_upgraddiagrams" FunctionName="NBInventoryDBModel.Store.sp_upgraddiagrams" />
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

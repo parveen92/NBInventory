@@ -1,0 +1,63 @@
+﻿@model IEnumerable<NBInventory.DTO.KitchenItemDetailDTO>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Kitchen_ItemDetail_ID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Kitchen_ID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Kitchen_ItemID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Kitchen_ItemQuantity)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Kitchen_ItemDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Kitchen_StoreID)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Kitchen_ItemDetail_ID)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Kitchen_ID)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Kitchen_ItemID)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Kitchen_ItemQuantity)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Kitchen_ItemDate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Kitchen_StoreID)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+            @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+            @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+        </td>
+    </tr>
+}
+
+</table>
